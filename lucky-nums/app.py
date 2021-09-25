@@ -18,16 +18,19 @@ def get_lucky_num():
     errors = {}
 
     # check for errors
-    if not user_info["name"]:
+    if not user_info.get("name", False):
         errors["name"] = ["This field is required."]
     
-    if not user_info["email"]:
+    if not user_info.get("email", False):
         errors["email"] = ["This field is required."]
+
+    try:
+        if not (1900 <= int(user_info.get("year", 0)) <= 2000):
+            errors["year"] = ["Invalid value, must be between 1900 and 2000 (inclusive)."]
+    except ValueError:
+        errors["year"] = ["Invalid value, must be an integer."]
     
-    if not (1900 <= int(user_info["year"]) <= 2000):
-        errors["year"] = ["Invalid value, must be between 1900 and 2000 (inclusive)."]
-    
-    if user_info["color"] not in ["red", "green", "orange", "blue"]:
+    if user_info.get("color", "") not in ["red", "green", "orange", "blue"]:
         errors["color"] = ["Invalid value, must be one of: red, green, orange, blue."]
 
     # no errors found
